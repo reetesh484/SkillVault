@@ -3,6 +3,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
+from .serializers import SignupSerializer
+from django.db import transaction
 
 @api_view(["POST"])
 @permission_classes([AllowAny])
@@ -35,4 +38,18 @@ def me_view(request):
 def logout_view(request):
     logout(request)
     return Response({"detail": "Logged out"})
+
+class SignupView(APIView):
+    authentication_classes = []
+    permission_classes = []
     
+    
+    def post(self,request):
+        serializer = SignupSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        with transaction.atomic():
+            user = serializer.save()
+            login(request,user)
+
+            return Response(status=status.HTTP_201_CREATED)

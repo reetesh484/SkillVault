@@ -29,7 +29,7 @@ export function ConceptsList({
     navigate(editUrl, { replace: true });
   };
 
-  const ITEM_HEIGHT = 195;
+  const ITEM_HEIGHT = 205;
 
   const Row = ({ index, style }: RowComponentProps) => {
     const concept: any = concepts[index];

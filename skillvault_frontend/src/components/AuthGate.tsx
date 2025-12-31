@@ -1,15 +1,30 @@
 import { useMe } from "@/hooks/useMe";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
-export function AuthGate({ children }: { children: React.ReactNode }) {
+interface AuthGateProps {
+  requiresAuth: boolean;
+  children: React.ReactNode;
+}
+
+export function AuthGate({ requiresAuth, children }: AuthGateProps) {
   const { isLoading, isError } = useMe();
+  const location = useLocation();
 
-  if (isError) {
-    return <Navigate to="/login" replace />;
-  }
-
+  //1. Auth unknown → pause
   if (isLoading) {
     return <div>Loading...</div>;
+  }
+
+  const isAuthenticated = !isError;
+
+  // 2. Route requires auth, but user is not authenticated
+  if (requiresAuth && !isAuthenticated) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+
+  // 3. Route requires guest, but user *is* authenticated
+  if (!requiresAuth && isAuthenticated) {
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;

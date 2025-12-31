@@ -1,4 +1,3 @@
-import { api } from "@/api";
 import { login } from "@/api/auth";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,27 +12,33 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export function Login() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/";
 
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["me"] });
-      navigate("/");
+      navigate(from, { replace: true });
     },
   });
 
   return (
     <form
+      autoSave="on"
       onSubmit={(e) => {
         e.preventDefault();
         const form = e.currentTarget;
+        // Use FormData when you only need values at submit time.
+        // It reads the form as a unit, not the DOM structure, so it’s less fragile and easier to evolve.
+        // Use direct access or React state only when the UI needs values while typing.
         const formData = new FormData(form);
-        console.log(formData.entries());
         const username = formData.get("username") as string;
         const password = formData.get("password") as string;
         if (username && password) {

@@ -1,3 +1,4 @@
+import { AuthGate } from "@/components/AuthGate";
 import { AddConceptForm } from "@/components/ConceptForm";
 import { Login } from "@/components/LoginForm";
 import { ProtectedLayout } from "@/layout/ProtectedLayout";
@@ -11,11 +12,16 @@ import { Routes, Route } from "react-router-dom";
 export const AppRoutes = () => {
   return (
     <Routes>
-      {/* Public Routes  */}
-      <Route element={<PublicLayout />}>
+      {/* Auth Routes  */}
+      <Route
+        element={
+          <AuthGate requiresAuth={false}>
+            <PublicLayout />
+          </AuthGate>
+        }
+      >
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        {/* <Route path="/" element={<LandingPage />} /> */}
       </Route>
 
       {/* Protected Routes */}

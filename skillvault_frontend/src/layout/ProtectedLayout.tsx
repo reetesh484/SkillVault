@@ -4,7 +4,7 @@ import { MainLayout } from "./MainLayout";
 
 export function ProtectedLayout() {
   return (
-    <AuthGate>
+    <AuthGate requiresAuth>
       <MainLayout />
     </AuthGate>
   );

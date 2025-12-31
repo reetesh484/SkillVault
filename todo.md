@@ -36,11 +36,12 @@
 ### 2.1 Session Authentication (🎯 PRIMARY)
 
 **Why:** Simple, secure, works great for web apps, built into Django
+**Note:** Session-based authentication is secure for browser applications when implemented correctly, but it doesn’t scale well to stateless systems, non-browser clients, cross-domain APIs, or third-party access. JWTs address these architectural constraints and avoid CSRF by not relying on cookies, but they shift risk toward XSS since tokens are typically accessible to JavaScript.
 
 #### Backend
 
 - [x] Configure Django session authentication
-- [ ] User registration endpoint (`/api/auth/register/`)
+- [x] User registration endpoint (`/api/auth/register/`)
 - [x] Login endpoint (`/api/auth/login/`)
 - [x] Logout endpoint (`/api/auth/logout/`)
 - [x] Get current user endpoint (`/api/auth/me/`)
@@ -51,41 +52,41 @@
 - [ ] User model extensions
   - [ ] Profile fields (name, bio, avatar)
   - [ ] Preferences (theme, default view)
-- [ ] Protect API endpoints with `@login_required`
+- [x] Protect API endpoints (by default all routes are protected via permission_class = isAuthenticated)
 - [ ] Add user relationship to Concept model
   - [ ] Foreign key to User
   - [ ] Migration to add user field
 - [ ] Filter concepts by authenticated user
-- [ ] Update serializers to include user context
+- [x] Update serializers to include user context
 
 #### Frontend
 
 - [ ] Login page with form validation
-  - [ ] Email/username input
+  - [x] Email/username input
   - [ ] Password input with show/hide toggle
   - [ ] "Remember me" checkbox
   - [ ] Error handling
 - [ ] Registration page
-  - [ ] Email validation
+  - [x] Email validation
   - [ ] Password strength indicator
-  - [ ] Confirm password field
+  - [x] Confirm password field
   - [ ] Terms & conditions checkbox
-- [ ] Session management
-  - [ ] Axios credentials configuration (`withCredentials: true`)
-  - [ ] CSRF token handling
-  - [ ] Session persistence
-- [ ] Protected routes
-  - [ ] Auth context/provider
-  - [ ] Redirect to login if unauthenticated
-  - [ ] Preserve redirect URL after login
+- [x] Session management
+  - [x] Axios credentials configuration (`withCredentials: true`)
+  - [x] CSRF token handling
+  - [x] Session persistence
+- [x] Protected routes
+  - [x] Auth context/provider
+  - [x] Redirect to login if unauthenticated
+  - [x] Preserve redirect URL after login
 - [ ] User profile page
   - [ ] View profile
   - [ ] Edit profile
   - [ ] Change password
-- [ ] Logout functionality
-  - [ ] Logout button in nav
-  - [ ] Clear local state
-  - [ ] Redirect to login
+- [x] Logout functionality
+  - [x] Logout button in nav
+  - [x] Clear local state
+  - [x] Redirect to login
 - [ ] Password reset UI
   - [ ] Forgot password link
   - [ ] Email input form
