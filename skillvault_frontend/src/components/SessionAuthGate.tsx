@@ -1,6 +1,8 @@
 import { useMe } from "@/hooks/useMe";
 import { Navigate, useLocation } from "react-router-dom";
 
+//this auth gate is only suited for sessionBased auth
+
 interface AuthGateProps {
   requiresAuth: boolean;
   children: React.ReactNode;

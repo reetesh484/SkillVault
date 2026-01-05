@@ -1,5 +1,5 @@
 import React from "react";
-import { QueryClientProvider, QueryClient, Query } from "@tanstack/react-query";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 

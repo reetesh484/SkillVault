@@ -6,23 +6,59 @@ from rest_framework import status
 from rest_framework.views import APIView
 from .serializers import SignupSerializer
 from django.db import transaction
+from rest_framework_simplejwt.tokens import RefreshToken
 
-@api_view(["POST"])
-@permission_classes([AllowAny])
-def login_view(request):
-    username = request.data.get("username")
-    password = request.data.get("password")
+# Session based auth 
+# @api_view(["POST"])
+# @permission_classes([AllowAny])
+# def login_view(request):
+#     username = request.data.get("username")
+#     password = request.data.get("password")
     
-    user = authenticate(request, username=username, password=password)
+#     user = authenticate(request, username=username, password=password)
     
-    if user is None:
-        return Response(
-            {"detail": "Invalid credentials"},
-            status=status.HTTP_401_UNAUTHORIZED
+#     if user is None:
+#         return Response(
+#             {"detail": "Invalid credentials"},
+#             status=status.HTTP_401_UNAUTHORIZED
+#         )
+    
+#     login(request,user)
+#     return Response({"detail": "Login successful"}, status=status.HTTP_200_OK)
+
+# jwt auth 
+class JWTLoginView(APIView):
+    permission_classes = [AllowAny]
+    
+    def post(self,request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is None:
+            return Response(
+                {"detail": "Invalid credentials"},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        refresh = RefreshToken.for_user(user)
+        
+        response = Response({
+            'access': str(refresh.access_token),
+        }, status=status.HTTP_200_OK)
+        
+        response.set_cookie(
+            key='refresh_token',
+            value=str(refresh),
+            httponly=True,
+            secure=True,
+            samesite='Lax',
+            path='/'
         )
-    
-    login(request,user)
-    return Response({"detail": "Login successful"}, status=status.HTTP_200_OK)
+
+        return response
+
 
 @api_view(["GET"])
 def me_view(request):
@@ -36,8 +72,9 @@ def me_view(request):
     
 @api_view(["POST"])
 def logout_view(request):
-    logout(request)
-    return Response({"detail": "Logged out"})
+    response = Response({"detail": "Logged out"}, status=status.HTTP_200_OK)
+    # response.delete_cookie('refresh_token', path='/', samesite='Lax')
+    return response
 
 class SignupView(APIView):
     authentication_classes = []
@@ -50,6 +87,20 @@ class SignupView(APIView):
 
         with transaction.atomic():
             user = serializer.save()
-            login(request,user)
+            # login(request,user)
+            refresh = RefreshToken.for_user(user)
 
-            return Response(status=status.HTTP_201_CREATED)
+            response = Response({
+                'access': str(refresh.access_token),
+            }, status=status.HTTP_201_CREATED)
+
+            response.set_cookie(
+                key='refresh_token',
+                value=str(refresh),
+                httponly=True,
+                secure=True,
+                samesite='Lax',
+                path='/'
+            )
+
+            return response

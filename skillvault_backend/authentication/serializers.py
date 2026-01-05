@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 
 class SignupSerializer(serializers.Serializer):
     username = serializers.CharField()
@@ -21,3 +22,13 @@ class SignupSerializer(serializers.Serializer):
             first_name=validated_data['firstname'],
             last_name=validated_data['lastname']
         )
+
+class CookieTokenRefreshSerializer(TokenRefreshSerializer):
+    refresh = serializers.CharField(required=False)
+    def validate(self, attrs):
+        request = self.context.get("request")
+        refresh_token = request.COOKIES.get("refresh_token")
+        if not refresh_token:
+            raise serializers.ValidationError("Refresh token is required.")
+        attrs["refresh"] = refresh_token
+        return super().validate(attrs)

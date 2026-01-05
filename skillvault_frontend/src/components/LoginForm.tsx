@@ -1,4 +1,5 @@
 import { login } from "@/api/auth";
+import { useAuth } from "@/auth/AuthProvider";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,20 +12,22 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export function Login() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const location = useLocation();
+  const { setAccessToken } = useAuth();
 
   const from = location.state?.from?.pathname || "/";
 
   const mutation = useMutation({
     mutationFn: login,
-    onSuccess: () => {
-      queryClient.removeQueries({ queryKey: ["me"] });
+    onSuccess: (res) => {
+      // queryClient.removeQueries({ queryKey: ["me"] });
+      setAccessToken(res.data.access);
       navigate(from, { replace: true });
     },
   });
