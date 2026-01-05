@@ -8,8 +8,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
 
 export const MainLayout = () => {
-  const { data: user } = useMe();
-
   return (
     <div className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-gray-100 transition-colors">
       <nav className="border-b dark:border-gray-800 p-4 flex justify-between items-center">

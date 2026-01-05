@@ -1,0 +1,30 @@
+# Python
+**/__pycache__/
+**/*.py[cod]
+**/*.pyc
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Django
+**/*.log
+**/db.sqlite3
+**/staticfiles/
+
+# Environment variables
+.env
+
+# Node.js
+**/node_modules/
+
+# React/Vite build
+**/dist/
+
+# OS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/

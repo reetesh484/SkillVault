@@ -1,4 +1,4 @@
-import { AuthGate } from "@/components/AuthGate";
+import { AuthGate } from "@/components/SessionAuthGate";
 import { AddConceptForm } from "@/components/ConceptForm";
 import { Login } from "@/components/LoginForm";
 import { ProtectedLayout } from "@/layout/ProtectedLayout";
@@ -13,13 +13,7 @@ export const AppRoutes = () => {
   return (
     <Routes>
       {/* Auth Routes  */}
-      <Route
-        element={
-          <AuthGate requiresAuth={false}>
-            <PublicLayout />
-          </AuthGate>
-        }
-      >
+      <Route element={<PublicLayout />}>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
       </Route>

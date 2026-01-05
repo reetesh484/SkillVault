@@ -1,4 +1,4 @@
-import { api } from "@/api";
+import { api, refreshClient } from "@/api";
 
 type LoginPayload = {
   username: string;
@@ -23,4 +23,9 @@ export const signup = (payload: SignupPayload) => {
 
 export const logout = () => {
   return api.post("/auth/logout/");
+};
+
+export const refreshToken = async () => {
+  const response = await refreshClient.post("/auth/token/refresh/");
+  return response.data.access;
 };
