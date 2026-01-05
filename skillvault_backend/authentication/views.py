@@ -73,7 +73,7 @@ def me_view(request):
 @api_view(["POST"])
 def logout_view(request):
     response = Response({"detail": "Logged out"}, status=status.HTTP_200_OK)
-    # response.delete_cookie('refresh_token', path='/', samesite='Lax')
+    response.delete_cookie('refresh_token', path='/', samesite='Lax')
     return response
 
 class SignupView(APIView):
