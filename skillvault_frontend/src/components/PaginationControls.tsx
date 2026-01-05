@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 
 export interface PaginationControlsProps {

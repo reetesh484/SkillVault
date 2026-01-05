@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getCSRFToken } from "./utils/csrf";
 import {
   getGlobalAccessToken,
   setGlobalAccessToken,
@@ -7,13 +6,15 @@ import {
 } from "./auth/tokenStore";
 import { refreshToken } from "./api/auth";
 
+const baseURL = import.meta.env.VITE_API_BASE_URL ?? "/api";
+
 export const api = axios.create({
-  baseURL: "/api",
+  baseURL,
   withCredentials: true,
 });
 
 export const refreshClient = axios.create({
-  baseURL: "/api",
+  baseURL,
   withCredentials: true,
 });
 
@@ -50,7 +51,8 @@ api.interceptors.response.use(
 
     if (
       originalRequest._retry ||
-      originalRequest.url?.includes("auth/token/refresh")
+      originalRequest.url?.includes("auth/token/refresh") ||
+      originalRequest.url?.includes("auth/login")
     ) {
       triggerUnauthorized();
       return Promise.reject(error);

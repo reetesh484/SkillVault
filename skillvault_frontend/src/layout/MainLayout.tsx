@@ -1,11 +1,6 @@
-import { api } from "@/api";
-import { logout } from "@/api/auth";
 import LogoutButton from "@/components/LogoutButton";
 import { ModeToggle } from "@/components/ModeToggle";
-import { Button } from "@/components/ui/button";
-import { useMe } from "@/hooks/useMe";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 export const MainLayout = () => {
   return (

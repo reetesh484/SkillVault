@@ -1,4 +1,3 @@
-import { AuthGate } from "@/components/SessionAuthGate";
 import { AddConceptForm } from "@/components/ConceptForm";
 import { Login } from "@/components/LoginForm";
 import { ProtectedLayout } from "@/layout/ProtectedLayout";

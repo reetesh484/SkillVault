@@ -1,5 +1,4 @@
 import { screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
 import { renderWithClient } from "./test-utils";
 import userEvent from "@testing-library/user-event";
 
