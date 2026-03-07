@@ -1,53 +1,64 @@
 # SkillVault 🚀
 
-A full-stack web application for managing and organizing learning concepts with tags. Built with Django REST Framework and React with TypeScript.
+> A personal knowledge management app — because engineering concepts deserve better than scattered Notion pages. Store, tag, search, and revisit everything you learn in one place.
 
-## 📋 Table of Contents
+🌐 **Live Demo** — Coming soon (deploying on Railway + Vercel)
 
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Running the Application](#running-the-application)
-- [API Endpoints](#api-endpoints)
-- [Development](#development)
-- [Testing](#testing)
+---
 
 ## ✨ Features
 
-- **Concept Management**: Create, read, update, and delete learning concepts
-- **Tagging System**: Organize concepts with multiple tags
-- **Infinite Scroll**: Efficient loading with React Window virtualization
-- **Search & Filter**: Filter concepts by tags
-- **Responsive Design**: Mobile-friendly UI with Tailwind CSS
-- **Dark Mode**: Toggle between light and dark themes
-- **Optimistic Updates**: Instant UI feedback with React Query
-- **Authentication**: User authentication system (in progress)
+- **Concept Management** — Create, read, update, and delete learning concepts with rich markdown support
+- **Tagging System** — Organise concepts with multiple tags and filter by them instantly
+- **Full-Text Search** — PostgreSQL `tsvector`-powered search with relevance ranking *(in progress)*
+- **Redis Caching** — Search and list endpoints cached for fast repeated queries *(in progress)*
+- **Markdown Live Preview** — Split-pane editor with real-time rendered preview
+- **Infinite Scroll** — Virtualised list rendering with React Window for large datasets
+- **Stats Dashboard** — Overview of total concepts, tags, and activity *(in progress)*
+- **Authentication** — JWT-based auth with session support, token expiry, and one-time reset flow
+- **Optimistic Updates** — Instant UI feedback via React Query
+- **Dark Mode** — Toggle between light and dark themes
+- **Responsive Design** — Mobile-friendly UI with Tailwind CSS
+
+---
 
 ## 🛠 Tech Stack
 
 ### Backend
-
-- **Django 5.2.8** - Python web framework
-- **Django REST Framework** - RESTful API toolkit
-- **PostgreSQL/SQLite** - Database
-- **CORS Headers** - Cross-origin resource sharing
+- **Django 5.2** + **Django REST Framework** — API layer
+- **PostgreSQL** — Primary database with full-text search via `tsvector`
+- **Redis** — Caching layer for high-frequency endpoints
+- **Celery** — Background task queue for async operations *(in progress)*
+- **JWT Auth** — Token lifecycle management with expiry and blacklisting
 
 ### Frontend
+- **React 19** + **TypeScript** — UI with full type safety
+- **Vite** — Build tool and dev server
+- **TanStack Query (React Query)** — Server state, caching, and optimistic updates
+- **React Router** — Client-side routing
+- **React Window** — List virtualisation for performance
+- **Tailwind CSS 4** — Utility-first styling
+- **Shadcn/ui** + **Radix UI** — Accessible, composable components
+- **Axios** — HTTP client
+- **Vitest** + **Testing Library** — Unit and component testing
 
-- **React 19.2** - UI library
-- **TypeScript** - Type safety
-- **Vite** - Build tool and dev server
-- **React Query (TanStack Query)** - Server state management
-- **React Router** - Client-side routing
-- **React Window** - List virtualization for performance
-- **Tailwind CSS 4** - Utility-first CSS framework
-- **Radix UI** - Accessible component primitives
-- **Shadcn/ui** - Re-usable components
-- **Axios** - HTTP client
-- **Vitest** - Unit testing
-- **Testing Library** - React component testing
+---
+
+## 🗺️ Roadmap
+
+- [x] CRUD for concepts and tags
+- [x] JWT authentication with session support
+- [x] Infinite scroll with virtualised list
+- [x] Tag filtering
+- [x] Dark mode
+- [ ] PostgreSQL full-text search with `tsvector` ranking
+- [ ] Redis caching with targeted cache invalidation
+- [ ] Weekly digest email via Celery Beat
+- [ ] Public shareable concept links (one-time token, expiry)
+- [ ] Stats dashboard (concepts per tag, activity over time)
+- [ ] Deploy on Railway (backend) + Vercel (frontend)
+
+---
 
 ## 📁 Project Structure
 
@@ -55,8 +66,8 @@ A full-stack web application for managing and organizing learning concepts with 
 SkillVault/
 ├── skillvault_backend/
 │   ├── manage.py
-│   ├── authentication/          # User authentication app
-│   ├── concepts/                # Main concepts app
+│   ├── authentication/          # JWT auth app
+│   ├── concepts/                # Core concepts app
 │   │   ├── models.py           # Concept & Tag models
 │   │   ├── views.py            # API views
 │   │   ├── serializers.py      # DRF serializers
@@ -81,106 +92,82 @@ SkillVault/
     └── vite.config.ts
 ```
 
+---
+
 ## 📦 Prerequisites
 
-- **Python 3.10+**
-- **Node.js 18+**
-- **npm or yarn**
-- **pip**
+- Python 3.10+
+- Node.js 18+
+- PostgreSQL
+- Redis
+- pip + npm
+
+---
 
 ## 🚀 Installation
 
 ### Backend Setup
 
-1. Navigate to the backend directory:
-
 ```bash
 cd skillvault_backend
-```
 
-2. Create a virtual environment:
-
-```bash
+# Create and activate virtual environment
 python -m venv venv
-source venv/bin/activate  # On macOS/Linux
-# or
-venv\Scripts\activate     # On Windows
-```
+source venv/bin/activate        # macOS/Linux
+venv\Scripts\activate           # Windows
 
-3. Install dependencies:
+# Install dependencies
+pip install django djangorestframework django-cors-headers psycopg2-binary
 
-```bash
-pip install django djangorestframework django-cors-headers
-```
-
-4. Run migrations:
-
-```bash
+# Run migrations
 python manage.py migrate
-```
 
-5. Create a superuser (optional):
-
-```bash
+# (Optional) Create superuser
 python manage.py createsuperuser
-```
 
-6. Seed the database (optional):
-
-```bash
+# (Optional) Seed database
 python manage.py shell < sql/seed_concepts.sql
 ```
 
 ### Frontend Setup
 
-1. Navigate to the frontend directory:
-
 ```bash
 cd skillvault_frontend
-```
-
-2. Install dependencies:
-
-```bash
 npm install
 ```
 
+---
+
 ## 🏃 Running the Application
 
-### Start the Backend
-
 ```bash
-cd skillvault_backend
-python manage.py runserver
+# Backend — available at http://127.0.0.1:8000
+cd skillvault_backend && python manage.py runserver
+
+# Frontend — available at http://localhost:5173
+cd skillvault_frontend && npm run dev
 ```
 
-The API will be available at `http://127.0.0.1:8000`
-
-### Start the Frontend
-
-```bash
-cd skillvault_frontend
-npm run dev
-```
-
-The application will be available at `http://localhost:5173`
+---
 
 ## 🔌 API Endpoints
 
 ### Concepts
-
-- `GET /api/concepts/` - List all concepts (paginated)
-  - Query params: `?search=<query>&tags=<tag1,tag2>&page=<num>`
-- `POST /api/concepts/` - Create a new concept
-- `GET /api/concepts/{id}/` - Retrieve a specific concept
-- `PUT /api/concepts/{id}/` - Update a concept
-- `DELETE /api/concepts/{id}/` - Delete a concept
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/concepts/` | List all concepts (paginated) |
+| POST | `/api/concepts/` | Create a new concept |
+| GET | `/api/concepts/{id}/` | Retrieve a concept |
+| PUT | `/api/concepts/{id}/` | Update a concept |
+| DELETE | `/api/concepts/{id}/` | Delete a concept |
+| GET | `/api/concepts/search/?q=` | Full-text search |
 
 ### Tags
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/tags/` | List all tags |
 
-- `GET /api/tags/` - List all tags
-
-### Example Request
+### Example
 
 ```bash
 curl -X POST http://localhost:8000/api/concepts/ \
@@ -192,69 +179,33 @@ curl -X POST http://localhost:8000/api/concepts/ \
   }'
 ```
 
+---
+
 ## 💻 Development
 
-### Backend Development
-
-- **Admin Panel**: Access at `http://127.0.0.1:8000/admin`
-- **Django Shell**: `python manage.py shell`
-- **Create Migrations**: `python manage.py makemigrations`
-- **Apply Migrations**: `python manage.py migrate`
-
-### Frontend Development
-
-- **Development Server**: `npm run dev`
-- **Build for Production**: `npm run build`
-- **Preview Production Build**: `npm run preview`
-- **Lint Code**: `npm run lint`
-
-### Code Style
-
-- Backend: Follow PEP 8 Python style guide
-- Frontend: ESLint configuration included
-
-## 🧪 Testing
-
-### Frontend Tests
-
 ```bash
-cd skillvault_frontend
-npm run test          # Run tests once
-npm run test:watch    # Run tests in watch mode
+# Backend
+python manage.py makemigrations
+python manage.py migrate
+python manage.py shell
+
+# Frontend
+npm run dev          # Dev server
+npm run build        # Production build
+npm run lint         # Lint
+npm run test         # Run tests
+npm run test:watch   # Watch mode
 ```
 
-## 🎨 Key Features Implementation
-
-### Virtualized List
-
-Uses `react-window` for efficient rendering of large lists of concepts.
-
-### Infinite Scroll
-
-Automatic loading of more concepts as user scrolls.
-
-### Tag Filtering
-
-Click tags to filter concepts, with visual feedback for active filters.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/my-feature`
-3. Commit your changes: `git commit -am 'Add new feature'`
-4. Push to the branch: `git push origin feature/my-feature`
-5. Submit a pull request
-
-## 📝 License
-
-This project is open source and available under the MIT License.
+---
 
 ## 👤 Author
 
 **Reetesh Tiwari**
+[LinkedIn](https://linkedin.com/in/reeteshtiwari) · [GitHub](https://github.com/reetesh484)
 
-## 🙏 Acknowledgments
+---
 
-- Shadcn/ui for beautiful component library
-- TanStack Query for excellent data fetching
-- React Window for performance optimization
+## 📝 License
+
+MIT License — open source and free to use.
