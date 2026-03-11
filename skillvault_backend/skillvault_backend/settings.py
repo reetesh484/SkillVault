@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-h3_om5&ttqetco)15at-k&(%s&qusxn-)f33gof)qs0yo4(p%a'
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-h3_om5&ttqetco)15at-k&(%s&qusxn-)f33gof)qs0yo4(p%a")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DJANGO_DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = ['localhost',
                  '127.0.0.1',
@@ -84,21 +85,26 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'skillvault_backend.wsgi.application'
+DB_ENGINE = "django.db.backends.postgresql"
 
+
+ENVIRONMENT = os.getenv("ENVIRONMENT", "LOCAL")
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'skillvault',
-        'USER': 'reetesh.tiwari',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '5432',
+    "default": {
+        "ENGINE": DB_ENGINE,
+        "NAME": os.getenv("DATABASE_NAME", "skillvault"),
+        "USER": os.getenv("DATABASE_USER", "reetesh.tiwari"),
+        "PASSWORD": os.getenv("DATABASE_PASSWORD", ""),
+        "HOST": os.getenv("DATABASE_HOST", "localhost"),
+        "PORT": os.getenv("DATABASE_PORT", "5432"),
+        "CONN_MAX_AGE": 300,
     }
 }
+
 
 
 # Password validation
