@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'django_extensions',
     'corsheaders',
     'concepts',
     'authentication'
@@ -129,6 +130,7 @@ REST_FRAMEWORK = {
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
+    # "https://skill-vault-mu.vercel.app"
 ]
 
 
@@ -156,5 +158,8 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://skill-vault-mu.vercel.app",
+]
+
 CORS_ALLOW_CREDENTIALS = True

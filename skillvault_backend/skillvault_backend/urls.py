@@ -22,7 +22,7 @@ from rest_framework.routers import DefaultRouter
 from concepts.views import ConceptViewSet
 
 router = DefaultRouter()
-router.register(r'concepts', ConceptViewSet)
+router.register(r'concepts', ConceptViewSet, basename="concept")
 
 urlpatterns = [
     path('admin/', admin.site.urls),

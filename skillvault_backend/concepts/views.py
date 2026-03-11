@@ -9,7 +9,6 @@ from .pagination import CustomPagination
 class ConceptViewSet(viewsets.ModelViewSet):
     serializer_class = ConceptSerializer
     pagination_class = CustomPagination
-    queryset = Concept.objects.all()
     
     filter_backends = [OrderingFilter]
     
@@ -22,7 +21,7 @@ class ConceptViewSet(viewsets.ModelViewSet):
     ordering = ["-created_at", "id"]
     
     def get_queryset(self):
-        qs = super().get_queryset()
+        qs = Concept.objects.filter(owner=self.request.user)
         q = self.request.query_params.get('q', None)
         tags = self.request.query_params.get('tags')
         
@@ -34,3 +33,6 @@ class ConceptViewSet(viewsets.ModelViewSet):
             qs = qs.filter(tags__name__in=tag_list).distinct()
 
         return qs
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
