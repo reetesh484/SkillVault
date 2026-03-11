@@ -31,53 +31,56 @@ export function ConceptsList({
 
   const ITEM_HEIGHT = 205;
 
-  const Row = ({ index, style }: RowComponentProps) => {
-    const concept: any = concepts[index];
+  // const Row = ({ index, style }: RowComponentProps) => {
+  //   const concept: any = concepts[index];
 
-    return (
-      <div style={style} className="pb-4">
-        <ConceptCard
-          {...concept}
-          onDelete={() => onDelete?.(concept.id)}
-          onEdit={() => handleEdit(concept.id)}
-          onTagClick={toggleTags}
-        />
-      </div>
-    );
-  };
+  //   return (
+  //     <div style={style} className="pb-4">
+  //       <ConceptCard
+  //         {...concept}
+  //         onDelete={() => onDelete?.(concept.id)}
+  //         onEdit={() => handleEdit(concept.id)}
+  //         onTagClick={toggleTags}
+  //       />
+  //     </div>
+  //   );
+  // };
 
   return (
-    // <div className="grid gap-4">
-    //   {concepts.map((c: Concept) => (
-    //     <ConceptCard
-    //       key={c.id}
-    //       title={c.title}
-    //       notes={c.notes}
-    //       onDelete={() => handleDelete(c.id)}
-    //     />
-    //   ))}
-    // </div>
-    <List
-      rowComponent={Row}
-      rowCount={concepts.length}
-      rowHeight={ITEM_HEIGHT}
-      rowProps={{}}
-      style={{ maxHeight: "100vh", overflow: "auto" }}
-      onScroll={(e) => {
-        const target = e.currentTarget;
+    <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(300px,1fr))]">
+      {concepts.map((c: Concept) => (
+        <ConceptCard
+          key={c.id}
+          title={c.title}
+          notes={c.notes}
+          onDelete={() => onDelete?.(c.id)}
+          onEdit={() => handleEdit(c.id)}
+          onTagClick={toggleTags}
+        />
+      ))}
+    </div>
+    //infinite scroll list
+    // <List
+    //   rowComponent={Row}
+    //   rowCount={concepts.length}
+    //   rowHeight={ITEM_HEIGHT}
+    //   rowProps={{}}
+    //   style={{ maxHeight: "100vh" }}
+    //   onScroll={(e) => {
+    //     const target = e.currentTarget;
 
-        const distanceFromBottom =
-          target.scrollHeight - (target.scrollTop + target.clientHeight);
+    //     const distanceFromBottom =
+    //       target.scrollHeight - (target.scrollTop + target.clientHeight);
 
-        if (
-          distanceFromBottom < ITEM_HEIGHT * 3 &&
-          hasNextPage &&
-          onLoadMore &&
-          !isFetching
-        ) {
-          onLoadMore(); // fetchNextPage from parent
-        }
-      }}
-    />
+    //     if (
+    //       distanceFromBottom < ITEM_HEIGHT * 3 &&
+    //       hasNextPage &&
+    //       onLoadMore &&
+    //       !isFetching
+    //     ) {
+    //       onLoadMore(); // fetchNextPage from parent
+    //     }
+    //   }}
+    // />
   );
 }

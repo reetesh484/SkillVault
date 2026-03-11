@@ -10,9 +10,9 @@ export const MainLayout = () => {
           <Link to="/" className="hover:underline">
             Concepts
           </Link>
-          <Link to="/infinite-scroll" className="hover:underline">
+          {/* <Link to="/infinite-scroll" className="hover:underline">
             Infinite Scroll
-          </Link>
+          </Link> */}
           <Link to="/add-concept" className="hover:underline">
             Add Concept
           </Link>

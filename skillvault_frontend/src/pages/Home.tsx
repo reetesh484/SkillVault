@@ -10,6 +10,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useDeleteConcept } from "@/hooks/useDeleteConcept";
 import { toast } from "sonner";
 import FilterChips from "@/components/FilterChips";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -74,11 +75,11 @@ export default function Home() {
 
   useEffect(() => {
     const params: Record<string, string> = {};
-    if (page > 1) params.page = String(page);
     if (debouncedValue) params.q = debouncedValue;
+    if (selectedTags.length > 0) params.tags = selectedTags.join(",");
 
     setSearchParams(params, { replace: true });
-  }, [page, debouncedValue, setSearchParams]);
+  }, [debouncedValue, selectedTags]);
 
   if (isLoading) return <LoadingSpinner />;
 
@@ -89,15 +90,29 @@ export default function Home() {
 
   return (
     <>
-      <Input
-        type="text"
-        placeholder="Search concepts..."
-        value={searchInput}
-        onChange={onSearchChange}
-        className="mb-4 w-full"
-      />
+      <div className="relative mb-4">
+        <Input
+          type="text"
+          placeholder="Search concepts..."
+          value={searchInput}
+          onChange={onSearchChange}
+          className="w-full pr-9"
+        />
+        {debouncedValue && (
+          <Button
+            type="button"
+            aria-label="Clear search"
+            className="absolute right-0 top-1/2 -translate-y-1/2"
+            onClick={() => setSearchInput("")}
+          >
+            x
+          </Button>
+        )}
+      </div>
 
-      <FilterChips selectedTags={selectedTags} toggleTags={toggleTags} />
+      {selectedTags.length > 0 && (
+        <FilterChips selectedTags={selectedTags} toggleTags={toggleTags} />
+      )}
 
       {shouldShowList && (
         <ConceptsList concepts={concepts} onDelete={handleDelete} />

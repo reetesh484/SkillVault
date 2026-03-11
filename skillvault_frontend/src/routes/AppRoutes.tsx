@@ -4,6 +4,7 @@ import { ProtectedLayout } from "@/layout/ProtectedLayout";
 import PublicLayout from "@/layout/PublicLayout";
 import AddConcept from "@/pages/AddConcept";
 import Signup from "@/pages/auth/Signup";
+import { ConceptDetailPage } from "@/pages/ConceptDetailPage";
 import Home from "@/pages/Home";
 import InfiniteScroll from "@/pages/InfiniteScroll";
 import { Routes, Route } from "react-router-dom";
@@ -23,6 +24,7 @@ export const AppRoutes = () => {
         <Route path="/infinite-scroll" element={<InfiniteScroll />} />
         <Route path="/add-concept" element={<AddConcept />} />
         <Route path="/concepts/:id/edit" element={<AddConceptForm />} />
+        <Route path="/concepts/:id" element={<ConceptDetailPage />} />
       </Route>
     </Routes>
   );

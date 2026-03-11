@@ -1,12 +1,17 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const PUBLIC_ONLY_ROUTES = ["/login", "/signup"];
 
 export const AuthGate = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
-  console.log("AuthGate isAuthenticated:", isAuthenticated);
+
+  // Show loading while restoring session from localStorage
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   const isPublicOnly = PUBLIC_ONLY_ROUTES.includes(location.pathname);
 
