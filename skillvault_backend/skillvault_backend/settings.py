@@ -29,7 +29,7 @@ DEBUG = os.getenv("DJANGO_DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = ['localhost',
                  '127.0.0.1',
-                 "skillvault-p0gt.onrender.com"]
+                 "skillvault-p0gt.onrender.com", "skillvault-fe.onrender.com"]
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
@@ -136,6 +136,7 @@ REST_FRAMEWORK = {
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
+    "https://skillvault-fe.onrender.com"
     # "https://skill-vault-mu.vercel.app"
 ]
 
@@ -165,7 +166,8 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    "https://skill-vault-mu.vercel.app",
+    "http://localhost:5173",
+    "https://skillvault-fe.onrender.com"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
