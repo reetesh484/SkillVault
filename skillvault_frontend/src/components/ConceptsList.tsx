@@ -1,7 +1,5 @@
 import type { Concept } from "../types";
 import { ConceptCard } from "./ConceptCard";
-import { List } from "react-window";
-import type { RowComponentProps } from "react-window";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
@@ -13,14 +11,7 @@ interface Props {
   toggleTags?: (tag: string) => void;
 }
 
-export function ConceptsList({
-  concepts,
-  hasNextPage,
-  isFetching,
-  onLoadMore,
-  toggleTags,
-  onDelete,
-}: Props) {
+export function ConceptsList({ concepts, toggleTags, onDelete }: Props) {
   const navigate = useNavigate();
 
   const handleEdit = (id: number) => {
@@ -29,7 +20,7 @@ export function ConceptsList({
     navigate(editUrl, { replace: true });
   };
 
-  const ITEM_HEIGHT = 205;
+  // const ITEM_HEIGHT = 205;
 
   // const Row = ({ index, style }: RowComponentProps) => {
   //   const concept: any = concepts[index];

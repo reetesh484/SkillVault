@@ -2,7 +2,6 @@ import {
   Card,
   CardHeader,
   CardTitle,
-  CardContent,
   CardFooter,
   CardDescription,
 } from "@/components/ui/card";
@@ -43,7 +42,7 @@ export function ConceptCard({
     <Card
       className={cn(
         "shadow-sm border group flex flex-col justify-between  border-gray-200 py-4 dark:border-gray-800 bg-white dark:bg-neutral-900 transition-colors",
-        "hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700"
+        "hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700",
       )}
     >
       <CardHeader className="relative p-4 pb-2">

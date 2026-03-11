@@ -1,7 +1,6 @@
 let accessTokenRef: string | null = null;
 let onUnauthorized: (() => void) | null = null;
 let onTokenUpdated: ((token: string | null) => void) | null = null;
-let refreshPromise: Promise<string | null> | null = null;
 
 export function registerUnauthorizedHandler(fn: () => void) {
   onUnauthorized = fn;
