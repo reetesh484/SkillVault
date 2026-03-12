@@ -2,7 +2,7 @@
 
 > A personal knowledge management app — because engineering concepts deserve better than scattered Notion pages. Store, tag, search, and revisit everything you learn in one place.
 
-🌐 **Live Demo** — Coming soon (deploying on Railway + Vercel)
+🌐 **Live Demo** — Coming soon (deploying on Render)
 
 ---
 
