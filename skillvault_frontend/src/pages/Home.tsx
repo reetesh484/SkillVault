@@ -115,7 +115,11 @@ export default function Home() {
       )}
 
       {shouldShowList && (
-        <ConceptsList concepts={concepts} onDelete={handleDelete} />
+        <ConceptsList
+          concepts={concepts}
+          onDelete={handleDelete}
+          toggleTags={toggleTags}
+        />
       )}
 
       {isSearchEmpty && (
