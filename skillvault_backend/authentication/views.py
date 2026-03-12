@@ -53,7 +53,7 @@ class JWTLoginView(APIView):
             value=str(refresh),
             httponly=True,
             secure=True,
-            samesite='Lax',
+            samesite='None',
             path='/'
         )
 
@@ -71,9 +71,10 @@ def me_view(request):
     })
     
 @api_view(["POST"])
+@permission_classes([AllowAny])
 def logout_view(request):
     response = Response({"detail": "Logged out"}, status=status.HTTP_200_OK)
-    response.delete_cookie('refresh_token', path='/', samesite='Lax')
+    response.delete_cookie('refresh_token', path='/', samesite='None')
     return response
 
 class SignupView(APIView):
@@ -99,7 +100,7 @@ class SignupView(APIView):
                 value=str(refresh),
                 httponly=True,
                 secure=True,
-                samesite='Lax',
+                samesite='None',
                 path='/'
             )
 
