@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { ArrowLeft, Trash2 } from "lucide-react";
+import { useDebounce } from "@/hooks/useDebounce";
 
 export default function AddConceptPage() {
   const { id } = useParams();
@@ -25,12 +26,54 @@ export default function AddConceptPage() {
   const [tags, setTags] = useState("");
   const [errors, setErrors] = useState<{ title?: string; notes?: string }>({});
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const debouncedValue = useDebounce(
+    JSON.stringify({ title, notes, tags }),
+    300,
+  );
 
   const { data: concept, isLoading: isFetching } = useQuery<Concept>({
     queryKey: ["concepts", id],
     queryFn: () => fetchConceptById(id!),
     enabled: isEdit,
   });
+
+  useEffect(() => {
+    if (!isEdit) return;
+
+    if (!initialized.current || !concept) return;
+
+    const debouncedValueParsed = JSON.parse(debouncedValue);
+
+    if (
+      !debouncedValueParsed.notes.trim() ||
+      !debouncedValueParsed.title.trim()
+    )
+      return;
+
+    const { title, notes, tags } = debouncedValueParsed;
+    const tagNames = tags
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
+
+    if (
+      title === concept.title &&
+      notes === concept.notes &&
+      tagNames.join(",") === concept.tags.map((t) => t.name).join(",")
+    ) {
+      return;
+    }
+
+    const payload = {
+      title,
+      notes,
+      tag_names: tagNames,
+    };
+
+    if (concept) {
+      updateMutation.mutate(payload);
+    }
+  }, [debouncedValue]);
 
   useEffect(() => {
     if (!initialized.current && isEdit && concept) {
@@ -62,6 +105,7 @@ export default function AddConceptPage() {
       queryClient.invalidateQueries({ queryKey: ["concepts"] });
     },
   });
+  console.log(updateMutation.status);
 
   const deleteMutation = useMutation({
     mutationFn: () => api.delete(`/concepts/${id}/`),
@@ -150,6 +194,13 @@ export default function AddConceptPage() {
         </div>
 
         <div className="flex items-center gap-2">
+          {isEdit && (
+            <span className="text-sm italic ">
+              {updateMutation.isPending && "Saving..."}
+              {updateMutation.isSuccess && "Saved"}
+              {updateMutation.isError && "Failed to save"}
+            </span>
+          )}
           <Button
             variant="outline"
             size="sm"
