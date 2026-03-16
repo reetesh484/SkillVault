@@ -22,7 +22,7 @@ export const MainLayout = () => {
           <ModeToggle />
         </div>
       </nav>
-      <main className="p-6 max-w-4xl mx-auto">
+      <main className="p-6 max-w-7xl mx-auto w-full">
         <Outlet />
       </main>
     </div>

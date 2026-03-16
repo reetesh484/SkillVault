@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchConceptById } from "@/api/concepts";
 import type { Concept } from "@/types";
+import Markdown from "react-markdown";
 
 export const AddConceptForm = () => {
   const [title, setTitle] = useState<string>("");
@@ -88,7 +89,7 @@ export const AddConceptForm = () => {
             loading: "Updating...",
             success: "Concept updated!",
             error: "Failed to update concept",
-          }
+          },
         );
       } else {
         await toast.promise(
@@ -97,7 +98,7 @@ export const AddConceptForm = () => {
             loading: "Adding...",
             success: "Concept added!",
             error: "Failed to add concept",
-          }
+          },
         );
       }
 
@@ -145,17 +146,22 @@ export const AddConceptForm = () => {
           <Label htmlFor="notes" className="text-gray-700 dark:text-gray-300">
             Notes
           </Label>
-          <Textarea
-            id="notes"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder="Write notes..."
-            aria-invalid={!!errors.notes}
-            aria-describedby={errors.notes ? "notes-error" : undefined}
-            className={`min-h-[120px] ${
-              errors.notes ? "border-red-500 focus-visible:ring-red-500" : ""
-            }`}
-          />
+          <div className=" flex gap-2 min-h-[300px]">
+            <Textarea
+              id="notes"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Write notes..."
+              aria-invalid={!!errors.notes}
+              aria-describedby={errors.notes ? "notes-error" : undefined}
+              className={`w-1/2 min-h-[120px] resize-none ${
+                errors.notes ? "border-red-500 focus-visible:ring-red-500" : ""
+              }`}
+            />
+            <div className="w-1/2 p-4 border-l border-gray-600 prose dark:prose-invert overflow-y-auto">
+              <Markdown>{notes}</Markdown>
+            </div>
+          </div>
           {errors.notes && (
             <p id="notes-error" className="test-sm text-red-500" role="alert">
               {errors.notes}
@@ -182,8 +188,8 @@ export const AddConceptForm = () => {
               ? "Updating..."
               : "Update Concept"
             : isSubmitting
-            ? "Adding..."
-            : "Add Concept"}
+              ? "Adding..."
+              : "Add Concept"}
         </Button>
       </form>
     </>

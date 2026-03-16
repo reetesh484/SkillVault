@@ -1,8 +1,7 @@
-import { AddConceptForm } from "@/components/ConceptForm";
 import { Login } from "@/components/LoginForm";
 import { ProtectedLayout } from "@/layout/ProtectedLayout";
 import PublicLayout from "@/layout/PublicLayout";
-import AddConcept from "@/pages/AddConcept";
+import AddConceptPage from "@/pages/AddConceptPage";
 import Signup from "@/pages/auth/Signup";
 import { ConceptDetailPage } from "@/pages/ConceptDetailPage";
 import Home from "@/pages/Home";
@@ -18,12 +17,14 @@ export const AppRoutes = () => {
         <Route path="/signup" element={<Signup />} />
       </Route>
 
-      {/* Protected Routes */}
+      {/* Full-screen editor routes — bypass MainLayout padding/max-width */}
+      <Route path="/add-concept" element={<AddConceptPage />} />
+      <Route path="/concepts/:id/edit" element={<AddConceptPage />} />
+
+      {/* Protected Routes with MainLayout */}
       <Route element={<ProtectedLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/infinite-scroll" element={<InfiniteScroll />} />
-        <Route path="/add-concept" element={<AddConcept />} />
-        <Route path="/concepts/:id/edit" element={<AddConceptForm />} />
         <Route path="/concepts/:id" element={<ConceptDetailPage />} />
       </Route>
     </Routes>
