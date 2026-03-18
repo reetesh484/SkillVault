@@ -1,0 +1,22 @@
+{
+  "name": "skillvault",
+  "version": "1.0.0",
+  "description": "> A personal knowledge management app — because engineering concepts deserve better than scattered Notion pages. Store, tag, search, and revisit everything you learn in one place.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "skillvault_frontend/**/*.{ts,tsx}": [
+      "bash -c 'cd skillvault_frontend && npx tsc -p tsconfig.app.json --noEmit'"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2"
+  }
+}

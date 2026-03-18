@@ -53,13 +53,13 @@ export default function AddConceptPage() {
     const { title, notes, tags } = debouncedValueParsed;
     const tagNames = tags
       .split(",")
-      .map((t) => t.trim())
+      .map((t: string) => t.trim())
       .filter(Boolean);
 
     if (
       title === concept.title &&
       notes === concept.notes &&
-      tagNames.join(",") === concept.tags.map((t) => t.name).join(",")
+      tagNames.join(",") === concept.tags.map((t: { name: string }) => t.name).join(",")
     ) {
       return;
     }
