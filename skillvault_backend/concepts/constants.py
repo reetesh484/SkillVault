@@ -1,0 +1,2 @@
+class CachePrefixes:
+    CONCEPTS = "concepts"
